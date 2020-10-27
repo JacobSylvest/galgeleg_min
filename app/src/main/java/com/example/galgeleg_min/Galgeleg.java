@@ -44,9 +44,9 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         editText = findViewById(R.id.editText);
 
         //Buttons
-        newGame = findViewById(R.id.playAgain); //starter nyt spil
-        endGame = findViewById(R.id.endGame); //afslutter spil
-        guess = findViewById(R.id.tryGuessButton); //gætte knappen
+        newGame = findViewById(R.id.playAgain); //New game is created
+        endGame = findViewById(R.id.endGame); //Ends game
+        guess = findViewById(R.id.tryGuessButton); //Guess button
 
         //Text fields that gives the user feedback on progress
         secretWord = findViewById(R.id.secretWord);
