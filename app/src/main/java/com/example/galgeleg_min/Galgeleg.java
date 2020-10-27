@@ -48,27 +48,27 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         endGame = findViewById(R.id.endGame); //afslutter spil
         guess = findViewById(R.id.tryGuessButton); //gætte knappen
 
-        //tekst felter der giver brugeren feedback på gæt og progress
+        //Text fields that gives the user feedback on progress
         secretWord = findViewById(R.id.secretWord);
         feedbackText = findViewById(R.id.guessFeedback);
         usedLetters = findViewById(R.id.usedLetters);
         nmbrOfWrongGuesses = findViewById(R.id.wrongGuesses);
         gameOutcomeMsg = findViewById(R.id.gameOutcomeMsg);
 
-        //usynlige indtil spillet har et udfald
+        //theese are invissible until we see a change in the game
         newGame.setVisibility(View.INVISIBLE);
         endGame.setVisibility(View.INVISIBLE);
         gameOutcomeMsg.setVisibility(View.INVISIBLE);
 
-        //sætter det hemmelige ord ved start
+        //puts the word on start.
         String word = "Ordet er på "+galgelogik.getSynligtOrd().length()+" bogstaver";
         secretWord.setText(word);
 
-        //sætter forkerte svar ved start
+        //puts wrong answer at start.
         String wrongAnswers = "forkerte svar: 0/7";
         nmbrOfWrongGuesses.setText(wrongAnswers);
 
-        //sætter gæt ved start
+        //puts n guesses at start
         String lettersUsed = "Ingen gæt fortaget endnu";
         usedLetters.setText(lettersUsed);
 
@@ -76,5 +76,103 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         guess.setOnClickListener(this);
         newGame.setOnClickListener(this);
         endGame.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        galgelogik.gætBogstav(editText.getText().toString()); //this sends the guessed letter to the logic.
+
+        guessedLetters(); //builds a string of used letters, and creates a area for the guessed letters.
+
+        isGuessCorrect(); //sends message to user wether they are wright or wrong.
+
+        isWinner(v); //win or lose?
+
+        editText.setText(""); // edittext gets cleared between guesses.
+
+        startNewGame(v); //creates new ganme, if user chooses to.
+
+        //Goes to menu.
+        if (v == endGame) {
+            finish();
+            intent = new Intent(this, MainActivity.class);
+        }
+    }
+
+    private void startNewGame(View v) {
+        // calls the 'startNytSpil' method
+        //neutralizes all values in UI and changes vissibillity on 3 buttons.
+        if (v == newGame) {
+            galgelogik.startNytSpil();
+            secretWord.setText("Gæt igen :)");
+            feedbackText.setText("");
+            usedLetters.setText("");
+            nmbrOfWrongGuesses.setText("");
+            imageView.setImageResource(R.drawable.galge);
+
+            newGame.setVisibility(View.INVISIBLE);
+            endGame.setVisibility(View.INVISIBLE);
+            gameOutcomeMsg.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    //builds new string of previous guesses.
+    private void guessedLetters() {
+        StringBuilder used;
+        ArrayList<String> usedLetterList;
+        used = new StringBuilder();
+        usedLetterList = galgelogik.getBrugteBogstaver();
+        for (int i = 0; i <= usedLetterList.size() - 1; i++) {
+            used.append(usedLetterList.get(i)).append(", ");
+            usedLetters.setText("Tidligere gæt:\n"+used);
+        }
+    }
+
+    //hides keyboard, vissibillity of buttons, creates 'Winner / loser' message.
+    private void isWinner(View v) {
+        if (galgelogik.erSpilletVundet()) {
+            String winnerStr = "DU VANDT!";
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            gameOutcomeMsg.setVisibility(View.VISIBLE);
+            newGame.setVisibility(View.VISIBLE);
+            endGame.setVisibility(View.VISIBLE);
+            gameOutcomeMsg.setText(winnerStr);
+
+        } else if (galgelogik.erSpilletTabt()) {
+            secretWord.setText("Ordet var: "+galgelogik.getOrdet());
+            String loserString = "DU TABTE!";
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            gameOutcomeMsg.setVisibility(View.VISIBLE);
+            newGame.setVisibility(View.VISIBLE);
+            endGame.setVisibility(View.VISIBLE);
+            gameOutcomeMsg.setText(loserString);
+        }
+    }
+
+    //Is letter right or wrong?
+    private void isGuessCorrect() {
+        String str,str2;
+        String updateWord;
+        int wrongGuesses;
+        if (galgelogik.erSidsteBogstavKorrekt()) {
+            str = "\"" + editText.getText() + "\"" + " var korrekt!";
+            updateWord = galgelogik.getSynligtOrd();
+            secretWord.setText(updateWord);
+        } else {
+            wrongGuesses = galgelogik.getAntalForkerteBogstaver();
+            str = "\"" + editText.getText() + "\"" + " var IKKE korrekt!";
+            str2 = "forkerte svar: "+wrongGuesses + "/7";
+            nmbrOfWrongGuesses.setText(str2);
+
+            imageView = findViewById(R.id.imageView);
+            updateImage(wrongGuesses); //opdaterer galgen
+
+        }
+        feedbackText.setText(str);
     }
 }
