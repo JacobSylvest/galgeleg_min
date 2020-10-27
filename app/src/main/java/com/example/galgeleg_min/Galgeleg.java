@@ -175,4 +175,31 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         }
         feedbackText.setText(str);
     }
+
+    //updates the pictures when wrong answer.
+    public void updateImage(int wrongGuesses) {
+        switch (wrongGuesses) {
+            case 1:
+            case 2:
+                imageView.setImageResource(R.drawable.forkert1);
+                break;
+            case 3:
+                imageView.setImageResource(R.drawable.forkert2);
+                break;
+            case 4:
+                imageView.setImageResource(R.drawable.forkert3);
+                break;
+            case 5:
+                imageView.setImageResource(R.drawable.forkert4);
+                break;
+            case 6:
+                imageView.setImageResource(R.drawable.forkert5);
+                break;
+            case 7:
+                imageView.setImageResource(R.drawable.forkert6);
+                break;
+            default:
+                break;
+        }
+    }
 }
