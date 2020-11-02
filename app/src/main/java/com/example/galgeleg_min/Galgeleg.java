@@ -39,7 +39,6 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_galgeleg);
-
         galgelogik = new Galgelogik();
         editText = findViewById(R.id.editText);
 
@@ -65,7 +64,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         secretWord.setText(word);
 
         //puts wrong answer at start.
-        String wrongAnswers = "forkerte svar: 0/7";
+        String wrongAnswers = "forkerte forsøg: 0/7";
         nmbrOfWrongGuesses.setText(wrongAnswers);
 
         //puts n guesses at start
@@ -132,7 +131,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     //hides keyboard, vissibillity of buttons, creates 'Winner / loser' message.
     private void isWinner(View v) {
         if (galgelogik.erSpilletVundet()) {
-            String winnerStr = "DU VANDT!";
+            String winnerStr = "TILLYKKE, DU VANDT!";
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
@@ -143,7 +142,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
 
         } else if (galgelogik.erSpilletTabt()) {
             secretWord.setText("Ordet var: "+galgelogik.getOrdet());
-            String loserString = "DU TABTE!";
+            String loserString = "DESVÆRRE, DU TABTE!";
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 

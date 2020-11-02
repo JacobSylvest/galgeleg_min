@@ -21,7 +21,7 @@ public class HelpMenu extends AppCompatActivity implements View.OnClickListener 
 
         helpMsg = "- Galgleleg spilles ved at gætte på en række bogstaver. Disse skrives ind ét bogstav af gangen. Gættes der korrekt, vil det bogstav man gættede blive synligt.  \n\n" +
                 "- Man har 7 forsøg på at gætte rigtigt før spillet slutter med en taberbesked. \n\n" +
-                "- Der vil blive vist de bogstaver man har gættet, så man ikke benutter de samme bogstavr flere gange. ";
+                "- Der vil blive vist de bogstaver man har gættet, så man ikke benytter de samme bogstaver flere gange. ";
 
         textView = findViewById(R.id.helpMsg);
         menuButton = findViewById(R.id.goToMenu);

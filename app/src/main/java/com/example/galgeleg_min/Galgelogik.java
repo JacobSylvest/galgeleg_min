@@ -13,20 +13,26 @@ public class Galgelogik {
     ArrayList<String> muligeOrd = new ArrayList<String>();
     private String ordet;
     private ArrayList<String> brugteBogstaver = new ArrayList<String>();
+    private ArrayList<String> scoreDataListe = new ArrayList<>();
     private String synligtOrd;
     private int antalForkerteBogstaver;
     private boolean sidsteBogstavVarKorrekt;
     private boolean spilletErVundet;
     private boolean spilletErTabt;
 
+    private static Galgelogik instance = new Galgelogik();
+    public static Galgelogik getInstance(){
+        return instance;
+    }
+
     public Galgelogik() {
         muligeOrd.add("galgeleg");
         muligeOrd.add("information");
         muligeOrd.add("elskov");
         muligeOrd.add("pandekage");
-        muligeOrd.add("akademisk");
+        muligeOrd.add("tartelet");
         muligeOrd.add("litteratur");
-        muligeOrd.add("princippet");
+        muligeOrd.add("ø");
         muligeOrd.add("syndrom");
         muligeOrd.add("had");
         muligeOrd.add("gavtyv");
@@ -82,6 +88,8 @@ public class Galgelogik {
     private void opdaterSynligtOrd() {
         synligtOrd = "";
         spilletErVundet = true;
+        scoreDataListe.add(scoreData(ordet,antalForkerteBogstaver));
+
         for (int n = 0; n < ordet.length(); n++) {
             String bogstav = ordet.substring(n, n + 1);
             if (brugteBogstaver.contains(bogstav)) {
@@ -149,6 +157,14 @@ public class Galgelogik {
         System.out.println("---------- ");
     }
 
+    public String scoreData (String ordet, int antalForkerteBogstaver){
+        return "ordet var: " + ordet + "Forkerte bogstaver: "+ antalForkerteBogstaver;
+    }
+
+    public ArrayList<String> getList(){
+        return scoreDataListe;
+    }
+
     /**
      * Hent ord fra DRs forside (https://dr.dk)
      */
@@ -185,7 +201,7 @@ public class Galgelogik {
      * @throws Exception
      */
 
-    public void hentOrdFraRegneark(String sværhedsgrader) throws Exception {
+   /* public void hentOrdFraRegneark(String sværhedsgrader) throws Exception {
         String id = "1RnwU9KATJB94Rhr7nurvjxfg09wAHMZPYB3uySBPO6M";
 
         System.out.println("Henter data som kommasepareret CSV fra regnearket https://docs.google.com/spreadsheets/d/"+id+"/edit?usp=sharing");
@@ -212,5 +228,5 @@ public class Galgelogik {
 
     public static void main(String[] args) throws Exception {
         new Galgelogik().hentOrdFraRegneark("2");
-    }
+    }*/
 }

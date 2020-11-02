@@ -13,6 +13,7 @@ public class Highscore extends AppCompatActivity implements View.OnClickListener
     Button back;
     String notImplementedMsg;
     Intent intent;
+    Galgelogik galgelogik;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +21,15 @@ public class Highscore extends AppCompatActivity implements View.OnClickListener
         back = findViewById(R.id.goToMainMenu2);
         msg = findViewById(R.id.highscoreTextView);
 
+        galgelogik.getList();
+
         notImplementedMsg = "Ikke implementeret endnu!";
         msg.setText(notImplementedMsg);
 
         back.setOnClickListener(this);
 
     }
+
 
     @Override
     public void onClick(View v) {
