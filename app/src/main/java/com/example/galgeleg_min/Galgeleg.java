@@ -1,10 +1,14 @@
 package com.example.galgeleg_min;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,6 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -28,18 +36,28 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     TextView gameOutcomeMsg;
 
     EditText editText;
-
     Galgelogik galgelogik;
-
     ImageView imageView;
+    Intent intent, winnerIntent, loserIntent;
 
-    Intent intent;
+    ArrayList<Score> highscoreListe = new ArrayList<>();
+    String HIGHSCOREKEY2 = "highscores";
+    String HIGHSCOREKEY = "highscore";
+
+    Score hsStyring;
+    String spillerNavn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_galgeleg);
+
         galgelogik = new Galgelogik();
+
+        hentSpillerNavn();
+
+        winnerIntent = new Intent(this,Vinder.class);
         editText = findViewById(R.id.editText);
 
         //Buttons
@@ -54,7 +72,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         nmbrOfWrongGuesses = findViewById(R.id.wrongGuesses);
         gameOutcomeMsg = findViewById(R.id.gameOutcomeMsg);
 
-        //theese are invissible until we see a change in the game
+        //Theese are invissible until we see a change in the game
         newGame.setVisibility(View.INVISIBLE);
         endGame.setVisibility(View.INVISIBLE);
         gameOutcomeMsg.setVisibility(View.INVISIBLE);
@@ -81,16 +99,11 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
 
         galgelogik.gætBogstav(editText.getText().toString()); //this sends the guessed letter to the logic.
-
         guessedLetters(); //builds a string of used letters, and creates a area for the guessed letters.
-
         isGuessCorrect(); //sends message to user wether they are wright or wrong.
-
         isWinner(v); //win or lose?
-
-        editText.setText(""); // edittext gets cleared between guesses.
-
-        startNewGame(v); //creates new ganme, if user chooses to.
+        editText.setText(""); // edit text gets cleared between guesses.
+        startNewGame(v); //creates new game, if user chooses to.
 
         //Goes to menu.
         if (v == endGame) {
@@ -131,7 +144,10 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     //hides keyboard, vissibillity of buttons, creates 'Winner / loser' message.
     private void isWinner(View v) {
         if (galgelogik.erSpilletVundet()) {
+            /*Intent winnerIntent = new Intent(this,Vinder.class);
+            startActivity(winnerIntent);*/
             String winnerStr = "TILLYKKE, DU VANDT!";
+            gemInfo();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
@@ -173,6 +189,53 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
 
         }
         feedbackText.setText(str);
+    }
+
+    public void gemInfo() {
+        hentHighscore();
+        hsStyring = new Score(galgelogik.getOrdet(), spillerNavn, galgelogik.getAntalForkerteBogstaver() + "");
+        highscoreListe.add(hsStyring);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(HIGHSCOREKEY2, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(highscoreListe);
+        editor.putString(HIGHSCOREKEY, json);
+        editor.apply();
+    }
+
+    private void hentHighscore() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences(HIGHSCOREKEY2, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(HIGHSCOREKEY, null);
+        Type type = new TypeToken<ArrayList<Score>>() {
+        }.getType();
+        highscoreListe = gson.fromJson(json, type);
+
+        if (highscoreListe == null) {
+            highscoreListe = new ArrayList<>();
+        }
+    }
+
+    public void hentSpillerNavn() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Indtast spiller navn:");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                spillerNavn = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                spillerNavn = "Ikke navngivet";
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     //updates the pictures when wrong answer.
