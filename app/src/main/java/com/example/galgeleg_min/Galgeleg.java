@@ -32,7 +32,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     TextView secretWord;
     TextView feedbackText;
     TextView usedLetters;
-    TextView nmbrOfWrongGuesses;
+    TextView nWrongGuesses;
     TextView gameOutcomeMsg;
 
     EditText editText;
@@ -44,7 +44,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     String HIGHSCOREKEY2 = "highscores";
     String HIGHSCOREKEY = "highscore";
 
-    Score hsStyring;
+    Score highscoreStyring;
     String spillerNavn;
 
 
@@ -69,7 +69,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         secretWord = findViewById(R.id.secretWord);
         feedbackText = findViewById(R.id.guessFeedback);
         usedLetters = findViewById(R.id.usedLetters);
-        nmbrOfWrongGuesses = findViewById(R.id.wrongGuesses);
+        nWrongGuesses = findViewById(R.id.wrongGuesses);
         gameOutcomeMsg = findViewById(R.id.gameOutcomeMsg);
 
         //Theese are invissible until we see a change in the game
@@ -83,7 +83,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
 
         //puts wrong answer at start.
         String wrongAnswers = "forkerte forsøg: 0/7";
-        nmbrOfWrongGuesses.setText(wrongAnswers);
+        nWrongGuesses.setText(wrongAnswers);
 
         //puts n guesses at start
         String lettersUsed = "Ingen gæt fortaget endnu";
@@ -120,7 +120,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
             secretWord.setText("Gæt igen :)");
             feedbackText.setText("");
             usedLetters.setText("");
-            nmbrOfWrongGuesses.setText("");
+            nWrongGuesses.setText("");
             imageView.setImageResource(R.drawable.galge);
 
             newGame.setVisibility(View.INVISIBLE);
@@ -182,7 +182,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
             wrongGuesses = galgelogik.getAntalForkerteBogstaver();
             str = "\"" + editText.getText() + "\"" + " var IKKE korrekt!";
             str2 = "forkerte svar: "+wrongGuesses + "/7";
-            nmbrOfWrongGuesses.setText(str2);
+            nWrongGuesses.setText(str2);
 
             imageView = findViewById(R.id.imageView);
             updateImage(wrongGuesses); //opdaterer galgen
@@ -193,8 +193,8 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
 
     public void gemInfo() {
         hentHighscore();
-        hsStyring = new Score(galgelogik.getOrdet(), spillerNavn, galgelogik.getAntalForkerteBogstaver() + "");
-        highscoreListe.add(hsStyring);
+        highscoreStyring = new Score(galgelogik.getOrdet(), spillerNavn, galgelogik.getAntalForkerteBogstaver() + "");
+        highscoreListe.add(highscoreStyring);
         SharedPreferences sharedPreferences = this.getSharedPreferences(HIGHSCOREKEY2, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();

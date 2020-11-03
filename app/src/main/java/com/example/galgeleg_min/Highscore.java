@@ -26,8 +26,8 @@ public class Highscore extends AppCompatActivity implements View.OnClickListener
 
     ArrayList<Score> highscoreListe;
 
-    String HIGHSCOREKEY2 = "highscores";
-    String HIGHSCOREKEY = "highscore";
+    String highscoreKey_2 = "highscores";
+    String highscoreKey_1 = "highscore";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +42,9 @@ public class Highscore extends AppCompatActivity implements View.OnClickListener
         back.setOnClickListener(this);
     }
     private void hentHighscore() {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(HIGHSCOREKEY2, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(highscoreKey_2, Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString(HIGHSCOREKEY, null);
+        String json = sharedPreferences.getString(highscoreKey_1, null);
         Type type = new TypeToken<ArrayList<Score>>() {
         }.getType();
         highscoreListe = gson.fromJson(json, type);
