@@ -38,6 +38,7 @@ public class Highscore extends AppCompatActivity implements View.OnClickListener
 
         back = findViewById(R.id.goToMainMenu2);
         listView = findViewById(R.id.high_score_list);
+
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, highscoreListe));
         back.setOnClickListener(this);
     }

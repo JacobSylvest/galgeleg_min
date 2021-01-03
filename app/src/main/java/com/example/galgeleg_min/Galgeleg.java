@@ -46,6 +46,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
 
     Score highscoreStyring;
     String spillerNavn;
+    String hemmeligtOrd;
 
 
     @Override
@@ -56,6 +57,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
         galgelogik = new Galgelogik();
 
         hentSpillerNavn();
+        indtastOrd();
 
         winnerIntent = new Intent(this,Vinder.class);
         editText = findViewById(R.id.editText);
@@ -232,6 +234,31 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 spillerNavn = "Ikke navngivet";
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    /* this makes it possible for two players to battle eachother.
+    You write the word that the other player has to guess, and passes the device on to the oponent.
+     */
+    public void indtastOrd () {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle( "indtast hemmelig ord og giv enheden videre:");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                hemmeligtOrd = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                hemmeligtOrd = "Ikke Skrevet";
                 dialog.cancel();
             }
         });
