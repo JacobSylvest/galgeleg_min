@@ -22,7 +22,7 @@
 
     <ListView
         android:id="@+id/high_score_list"
-        android:layout_width="437dp"
+        android:layout_width="400dp"
         android:layout_height="286dp"
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"

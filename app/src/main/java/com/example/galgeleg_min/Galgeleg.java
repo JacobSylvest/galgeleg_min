@@ -245,7 +245,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
      */
     public void indtastOrd () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle( "indtast hemmelig ord og giv enheden videre:");
+        builder.setTitle( "indtast hemmeligt ord og giv enheden videre:");
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
