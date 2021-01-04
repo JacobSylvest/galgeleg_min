@@ -47,6 +47,7 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     Score highscoreStyring;
     String spillerNavn;
     String hemmeligtOrd;
+    Vinder vinder;
 
 
     @Override
@@ -146,8 +147,9 @@ public class Galgeleg extends AppCompatActivity implements View.OnClickListener 
     //hides keyboard, vissibillity of buttons, creates 'Winner / loser' message.
     private void isWinner(View v) {
         if (galgelogik.erSpilletVundet()) {
-            /*Intent winnerIntent = new Intent(this,Vinder.class);
-            startActivity(winnerIntent);*/
+            Intent winnerIntent = new Intent(this,Vinder.class);
+            startActivity(winnerIntent);
+
             String winnerStr = "TILLYKKE, DU VANDT!";
             gemInfo();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

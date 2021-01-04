@@ -12,13 +12,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Vinder extends AppCompatActivity /*implements View.OnClickListener */{
+public class Vinder extends AppCompatActivity {
 
     Button button;
     TextView text, text2, text3;
     private Galgelogik galgelogik;
     MediaPlayer Win;
-
 
 
 
@@ -34,7 +33,7 @@ public class Vinder extends AppCompatActivity /*implements View.OnClickListener 
         galgelogik = Galgelogik.getInstance();
         text2 = findViewById(R.id.textViewX);
         text = findViewById(R.id.textViewY);
-        text.setText(galgelogik.getOrdet()); //ellers eer det galgelogik.getSynligtOrd()
+        text.setText(galgelogik.getOrdet()); //ellers er det galgelogik.getSynligtOrd()
 
         text3 = findViewById(R.id.textViewZ);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.hyperspace_out);
@@ -49,9 +48,6 @@ public class Vinder extends AppCompatActivity /*implements View.OnClickListener 
             }
         });
 
-
-       /* menuIntent = new Intent(this, MainActivity.class);
-        menu.setOnClickListener(this);*/
     }
 
     @Override
@@ -59,9 +55,4 @@ public class Vinder extends AppCompatActivity /*implements View.OnClickListener 
         super.onPause();
         Win.release();
     }
-/*
-    @Override
-    public void onClick(View v) {
-        startActivity(menuIntent);
-    }*/
 }
